@@ -5,8 +5,10 @@ import { FirstButton } from 'components/common/buttons/FirstButton.styled';
 import * as yup from 'yup';
 import 'yup-phone';
 import { nanoid } from 'nanoid';
-import { add } from 'redux/contactsSlice';
-import { useSelector, useDispatch } from 'react-redux/es/exports';
+import {
+  useFetchContactsQuery,
+  useCraeteContactsMutation,
+} from 'redux/contactSlice';
 
 const nameValid = "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
 const schema = yup.object().shape({
@@ -18,25 +20,26 @@ const schema = yup.object().shape({
     )
     .min(3)
     .required(),
-  number: yup.string().phone('UA').min(13).required(),
+  // number: yup.string().phone('UA').min(13).required(),
 });
 
 export const PhoneBookForm = () => {
-  const contacts = useSelector(state => state.contacts.items);
-  const dispatch = useDispatch();
+  const { data } = useFetchContactsQuery();
+  const [createContact] = useCraeteContactsMutation();
+  // const dispatch = useDispatch();
 
   const handleSubmit = (values, { resetForm }) => {
-    const { name, number } = values;
-    if (contacts.find(elem => elem.name.toLowerCase() === name.toLowerCase())) {
+    const { name, phone } = values;
+    if (data.find(elem => elem.name.toLowerCase() === name.toLowerCase())) {
       alert(`${name} is already in contacts.`);
     } else {
-      dispatch(add({ id: nanoid(), name, number }));
+      createContact({ id: nanoid(), name, phone });
       resetForm();
     }
   };
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
+      initialValues={{ name: '', phone: '' }}
       validationSchema={schema}
       onSubmit={handleSubmit}
     >
@@ -48,8 +51,12 @@ export const PhoneBookForm = () => {
         </Label>
         <Label htmlFor="name">
           Phone
-          <Input type="tel" name="number" />
-          <ErrorMessage name="number" />
+          <Input
+            type="tel"
+            name="phone"
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          />
+          <ErrorMessage name="phone" />
         </Label>
         <FirstButton type="submit">Add Contact</FirstButton>
       </PhoneForm>

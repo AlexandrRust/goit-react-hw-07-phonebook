@@ -1,15 +1,14 @@
 import { Label } from 'components/common/Label/Label.styled';
 import { Input } from 'components/common/Input/Input.styled';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
-import { addFilter } from 'redux/contactsSlice';
+import { addFilter } from 'redux/filterSlice';
 
 export const Filter = () => {
-  const filter = useSelector(state => state.contacts.filter);
+  const filter = useSelector(state => state.filter.filter);
   const dispatch = useDispatch();
-
   const changeFilter = e => {
-    const filter = e.currentTarget.value;
-    dispatch(addFilter(filter));
+    const filterValue = e.currentTarget.value;
+    dispatch(addFilter(filterValue));
   };
   return (
     <Label htmlFor="filter">
