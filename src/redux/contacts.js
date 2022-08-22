@@ -1,9 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createSlice } from '@reduxjs/toolkit';
+import { BASE_URL } from 'constants/constants';
 
 export const contactApi = createApi({
   reducerPath: 'contactApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://62fdf1f7a85c52ee482c37c3.mockapi.io/api/v1/',
+    baseUrl: BASE_URL,
   }),
   tagTypes: ['contact'],
   endpoints: builder => ({
@@ -33,6 +35,22 @@ export const {
   useDeleteContactsMutation,
   useCraeteContactsMutation,
 } = contactApi;
+
+const filterSlice = createSlice({
+  name: 'filter',
+  initialState: {
+    filter: '',
+  },
+  reducers: {
+    addFilter: (state, action) => {
+      state.filter = action.payload;
+    },
+  },
+});
+
+export const { addFilter } = filterSlice.actions;
+
+export default filterSlice.reducer;
 
 // const contactsSlice = createSlice({
 //   name: 'contacts',

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux/es/exports';
 import {
   useFetchContactsQuery,
   useDeleteContactsMutation,
-} from 'redux/contactSlice';
+} from 'redux/contacts';
 
 export const PhonesList = () => {
   const { data } = useFetchContactsQuery();

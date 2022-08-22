@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid';
 import {
   useFetchContactsQuery,
   useCraeteContactsMutation,
-} from 'redux/contactSlice';
+} from 'redux/contacts';
 
 const nameValid = "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
 const schema = yup.object().shape({
